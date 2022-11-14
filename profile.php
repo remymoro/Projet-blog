@@ -1,32 +1,20 @@
 <?php
 
+
 require_once __DIR__ . '/database/database.php';
 $authDB = require_once __DIR__ . '/database/security.php';
-$articleDB =require_once __DIR__ . '/database/model/articleDB.php';
+$articleDB = require_once __DIR__ . '/database/model/ArticleDB.php';
+
 $articles = [];
-$currentUser =$authDB-> isLoggedin();
-if(!$currentUser){
+$currentUser = $authDB->isLoggedin();
+if (!$currentUser) {
     header('Location: /');
 }
 
-$articles = $articleDB ->fetchUserArticle($currentUser['id']);
-
-
+$articles = $articleDB->fetchUserArticle($currentUser['id']);
 
 
 ?>
-
-
-
-
-
-
-
-
-</pre>
-
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -34,7 +22,7 @@ $articles = $articleDB ->fetchUserArticle($currentUser['id']);
 <head>
     <?php require_once 'includes/head.php' ?>
     <link rel="stylesheet" href="/public/css/profile.css">
-    <title>Mon Profil</title>
+    <title>Mon profil</title>
 </head>
 
 <body>
@@ -44,46 +32,38 @@ $articles = $articleDB ->fetchUserArticle($currentUser['id']);
             <h1>Mon espace</h1>
             <h2>Mes informations</h2>
             <div class="info-container">
-              <ul>
-                  <li>
-                      <strong>prenom :</strong>
-                      <p><?= $currentUser['firstname']?></p>
+                <ul>
+                    <li>
+                        <strong>Prénom :</strong>
+                        <p><?= $currentUser['firstname'] ?></p>
                     </li>
                     <li>
-                        <strong>nom :</strong>
-                        <p><?= $currentUser['lastname']?></p>
+                        <strong>Nom :</strong>
+                        <p><?= $currentUser['lastname'] ?></p>
                     </li>
                     <li>
-                        <strong>Email : </strong>
-                        <p><?= $currentUser['email']?></p>
+                        <strong>Email :</strong>
+                        <p><?= $currentUser['email'] ?></p>
                     </li>
-                </ul>
-                <h2>mes articles</h2>
-                <div class="articles-list">
-                    <ul>
-                <?php foreach($articles as $a): ?>
-                    <li>
-                        <span><?= $a['title']?></span>
-                        <div class="article-action">
-                            <a href="/form-article.php?id=<?=   $a['id']?>" class="btn btn-primary btn-small">Modifier</a>
-                            <a href="/delete-article.php?id=<?=  $a['id']?>" class="btn btn-secondary btn-small">Supprimer</a>
-                              
-                        </div>
-                    </li>
-
-                    <?php endforeach;?>
-
                 </ul>
             </div>
-
-
+            <h2>Mes articles</h2>
+            <div class="articles-list">
+                <ul>
+                    <?php foreach ($articles as $a) : ?>
+                        <li>
+                            <span><?= $a['title'] ?></span>
+                            <div class="article-actions">
+                                <a href="/delete-article.php?id=<?= $a['id'] ?>" class="btn btn-primary btn-small">Supprimer</a>
+                                <a href="/form-article.php?id=<?= $a['id'] ?>" class="btn btn-secondary btn-small">Modifier</a>
+                            </div>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
         </div>
+        <?php require_once 'includes/footer.php' ?>
     </div>
-    <?php require_once 'includes/footer.php' ?>
-</div>
-                     
-
-
 
 </body>
 

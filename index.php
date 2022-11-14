@@ -1,20 +1,33 @@
 <?php
-require_once './database/database.php';
-$AuthDB = require __DIR__ .'/database/security.php';
-$currentUser = $AuthDB->isloggedin();
+require __DIR__ . '/database/database.php';
+// je récupère le fichier database.php 
+// pour la connexion à pdo
+$authDB = require __DIR__ . '/database/security.php';
+// gestion des routes quand pour voir via le coockie si la personne est connecté 
+$currentUser = $authDB->isLoggedin();
+// dans le currentUser on récupère depuis database sécurity la méthode isLoggeding
+// qui va nous permetre de recupérer le cookie de session 
+// voir grafikart coockie de session php 
 $articleDB = require_once __DIR__ . '/database/model/ArticleDB.php';
-$articles =$articleDB->fetchAll();
+// le modèle article db contient la classe pour créer des articles ensuite supprimer lire et mettre à jours
+
+$articles = $articleDB->fetchAll();
+// je récupères tout les articles via la méthode fetchAll
+
 $categories = [];
-
-
-
+// iniitilisation de tableau vide 
 $_GET = filter_input_array(INPUT_GET, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+//  filtration de toute les requète get
+
 $selectedCat = $_GET['cat'] ?? '';
+// opérateur de fusion nul 
+
+
+
 
 if (count($articles)) {
     $cattmp = array_map(fn ($a) => $a['category'],  $articles);
     $categories = array_reduce($cattmp, function ($acc, $cat) {
-         
         if (isset($acc[$cat])) {
             $acc[$cat]++;
         } else {
@@ -69,11 +82,10 @@ if (count($articles)) {
                                         </div>
                                         <h3><?= $a['title'] ?></h3>
                                         <?php if ($a['author']) : ?>
-                                            
-                        <div class="article-author"><p><?= $a['firstname'].' '.$a['lastname']?></p></div>
-
-
-                                        <?php endif;?>
+                                            <div class="article-author">
+                                                <p><?= $a['firstname'] . ' ' . $a['lastname']  ?></p>
+                                            </div>
+                                        <?php endif; ?>
                                     </a>
                                 <?php endforeach; ?>
                             </div>

@@ -1,10 +1,5 @@
 <?php
-require_once './database/database.php';
-$AuthDB = require __DIR__ .'/database/security.php';
-$currentUser = $AuthDB->isloggedin();
-$articleDB = require_once __DIR__ . '/database/model/ArticleDB.php';
-$articles =$articleDB->fetchAll();
-$categories = [];
+
 
 
 
@@ -14,7 +9,7 @@ $selectedCat = $_GET['cat'] ?? '';
 if (count($articles)) {
     $cattmp = array_map(fn ($a) => $a['category'],  $articles);
     $categories = array_reduce($cattmp, function ($acc, $cat) {
-         
+
         if (isset($acc[$cat])) {
             $acc[$cat]++;
         } else {
@@ -50,7 +45,7 @@ if (count($articles)) {
     <div class="container">
         <?php require_once 'includes/header.php' ?>
         <div class="content">
-           <h1 style="font-size: 7rem;text-align:center;">Oups une erreur est survenue </h1>
+            <h1 style="font-size: 7rem;text-align:center;">Oups une erreur est survenue </h1>
         </div>
         <?php require_once 'includes/footer.php' ?>
     </div>
